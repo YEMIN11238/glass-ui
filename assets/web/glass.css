@@ -1,0 +1,99 @@
+/* Scoped web materials. Backdrop filters sample this web page, not the desktop. */
+.glass-scope {
+  --_glass-rgb: var(--glass-light-rgb, 255 255 255);
+  --_glass-min-fill: var(--glass-light-min-fill, .24);
+  --_glass-fill: calc(var(--_glass-min-fill) + (1 - var(--_glass-min-fill)) * (1 - var(--glass-transparency, .85)));
+  --_glass-line: rgb(255 255 255 / .65);
+  --_glass-field: rgb(255 255 255 / .16);
+  --_glass-button: #20242c;
+  --_glass-button-ink: #fff;
+  --_glass-focus: var(--glass-focus-ring, #273447);
+  color: var(--glass-light-ink, #181c23);
+  position: relative;
+  border: 1px solid var(--_glass-line);
+  border-radius: var(--glass-radius, 20px);
+  background-color: rgb(var(--_glass-rgb) / var(--_glass-fill));
+  box-shadow: var(--glass-shadow, 0 8px 28px rgb(20 25 35 / .07)), inset 0 1px 0 rgb(255 255 255 / .6);
+  /* Keep a component's color-scheme from introducing an opaque canvas. */
+  color-scheme: normal;
+}
+.glass-scope:is([data-glass-mode="liquid"], [data-glass-mode="frosted"])[data-glass-tone="dark"] {
+  --_glass-rgb: var(--glass-dark-rgb, 24 26 30);
+  --_glass-min-fill: var(--glass-dark-min-fill, .68);
+  --_glass-line: rgb(255 255 255 / .18);
+  --_glass-field: rgb(255 255 255 / .07);
+  --_glass-button: #f1f3f6;
+  --_glass-button-ink: #24272d;
+  --_glass-focus: var(--glass-focus-ring, #f3f6fc);
+  color: var(--glass-dark-ink, #fafbfc);
+}
+.glass-scope[data-glass-mode="liquid"] {
+  backdrop-filter: blur(var(--glass-liquid-blur, 4px)) saturate(var(--glass-saturation, 110%));
+  -webkit-backdrop-filter: blur(var(--glass-liquid-blur, 4px)) saturate(var(--glass-saturation, 110%));
+  background-image: linear-gradient(135deg, rgb(255 255 255 / .15), transparent 35%, transparent 72%, rgb(255 255 255 / .04));
+  box-shadow: var(--glass-shadow, 0 8px 28px rgb(20 25 35 / .07)), inset 0 1px 0 rgb(255 255 255 / .85), inset 0 -1px 0 rgb(255 255 255 / .18);
+}
+.glass-scope[data-glass-mode="frosted"] {
+  /* Transparency never reduces blur strength: diffusion remains distinct. */
+  backdrop-filter: blur(var(--glass-frosted-blur, 28px)) saturate(var(--glass-saturation, 110%));
+  -webkit-backdrop-filter: blur(var(--glass-frosted-blur, 28px)) saturate(var(--glass-saturation, 110%));
+  background-image: url("./frost-noise.svg");
+  background-repeat: repeat;
+  box-shadow: var(--glass-shadow, 0 8px 28px rgb(20 25 35 / .07)), inset 0 1px 0 rgb(255 255 255 / .3);
+}
+.glass-scope[data-glass-mode="system"] {
+  --_glass-rgb: var(--glass-system-light-rgb, 250 250 251);
+  --_glass-fill: 1;
+  --_glass-line: #e4e6ea;
+  --_glass-field: #fff;
+  --_glass-button: #20242c;
+  --_glass-button-ink: #fff;
+  --_glass-focus: var(--glass-focus-ring, #273447);
+  color: var(--glass-light-ink, #181c23);
+  background-image: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  color-scheme: light;
+}
+.glass-scope[data-glass-mode="system"]:is([data-solid-theme="dark"], :not([data-solid-theme])[data-system-theme="dark"]) {
+  --_glass-rgb: var(--glass-system-dark-rgb, 32 35 41);
+  --_glass-line: #41464f;
+  --_glass-field: #292d34;
+  --_glass-button: #f1f3f6;
+  --_glass-button-ink: #24272d;
+  --_glass-focus: var(--glass-focus-ring, #f3f6fc);
+  color: var(--glass-dark-ink, #fafbfc);
+  color-scheme: dark;
+}
+.glass-scope .glass-muted { color: var(--glass-light-muted, #414752); }
+.glass-scope:is([data-glass-mode="liquid"], [data-glass-mode="frosted"])[data-glass-tone="dark"] .glass-muted,
+.glass-scope[data-glass-mode="system"]:is([data-solid-theme="dark"], :not([data-solid-theme])[data-system-theme="dark"]) .glass-muted { color: var(--glass-dark-muted, #dde1e8); }
+.glass-scope .glass-surface {
+  background: var(--_glass-field);
+  border: 1px solid var(--_glass-line);
+  border-radius: var(--glass-inner-radius, 12px);
+  color: inherit;
+}
+.glass-scope :is(.glass-button, .glass-field) {
+  font: inherit;
+  color: inherit;
+  background: var(--_glass-field);
+  border: 1px solid var(--_glass-line);
+  border-radius: var(--glass-control-radius, 10px);
+  padding: .65em .9em;
+}
+.glass-scope .glass-button { cursor: pointer; }
+.glass-scope .glass-button[data-primary] { background: var(--_glass-button); color: var(--_glass-button-ink); }
+.glass-scope .glass-button:disabled { opacity: .5; cursor: default; }
+.glass-scope :is(.glass-button, .glass-field):focus-visible { outline: 2px solid var(--_glass-focus); outline-offset: 3px; }
+.glass-scope .glass-field { color-scheme: inherit; }
+.glass-scope:is([data-glass-mode="liquid"], [data-glass-mode="frosted"])[data-glass-tone="light"] .glass-field { color-scheme: light; }
+.glass-scope:is([data-glass-mode="liquid"], [data-glass-mode="frosted"])[data-glass-tone="dark"] .glass-field { color-scheme: dark; }
+.glass-scope .glass-field::placeholder { color: inherit; opacity: .72; }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-scope { --_glass-fill: 1; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass-scope { --_glass-fill: 1; }
+}
