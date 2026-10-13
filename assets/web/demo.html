@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Glass UI · 材质与统一外观</title>
+  <title>Glass UI · 网页内玻璃演示</title>
   <link rel="stylesheet" href="./glass.css">
   <style>
     *{box-sizing:border-box}body{margin:0;min-height:100vh;font:15px/1.7 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;color:#20242c;background:#e2e9e8}
@@ -11,12 +11,13 @@
     .demo-wrap{max-width:1200px;margin:0 auto;padding:45px 24px 70px}header{max-width:770px;margin-bottom:26px}h1{font-size:30px;letter-spacing:-.6px;margin:0 0 10px}header p{margin:0;color:#4b5560}
     .demo-controls{display:grid;grid-template-columns:220px 304px minmax(205px,1fr);align-items:center;gap:22px;padding:18px 22px;margin-bottom:24px;background:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.8);border-radius:16px}
     .demo-controls>label{display:flex;align-items:center;gap:10px;height:44px}.demo-controls select{height:44px;font:inherit}.demo-tone{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:304px;max-width:100%;height:44px}.demo-tone button{border:1px solid #ccd2d8;background:#fff;border-radius:9px;padding:9px 6px;height:44px;white-space:nowrap;font:inherit;cursor:pointer}.demo-controls :is(button,select,input){transition:none}.demo-controls :is(button,select,input):disabled{opacity:1}.demo-tone button[aria-pressed=true]{background:#24282f;color:#fff;border-color:#24282f}.demo-range[data-unavailable="true"]{visibility:hidden;pointer-events:none}.demo-range{display:flex;flex-direction:column;min-width:205px;min-height:52px;gap:5px}.demo-range label{display:flex;justify-content:space-between;font-size:13px}.demo-range input{width:100%;accent-color:#394453}.demo-card{max-width:650px;margin:0 auto}.demo-card{padding:24px;min-height:410px}.demo-card h2{margin:0 0 7px;font-size:22px}.demo-badge{font-size:11px;letter-spacing:.2px;margin-bottom:17px;display:block}.demo-card p{font-size:13px;margin:0 0 20px}.demo-card .glass-surface{padding:17px;margin:20px 0}.demo-card .glass-surface strong{display:block;font-size:14px;margin-bottom:7px}.demo-card .glass-field{display:block;width:100%;margin:14px 0}.demo-card .glass-button{font-size:13px}.demo-note{margin-top:24px;background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.85);padding:17px 22px;border-radius:13px;font-size:13px}.demo-note p{margin:0}.demo-status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);white-space:nowrap;border:0}.demo-file-note{display:none;margin:18px 0;padding:13px;background:#fff8df;border-radius:10px;font-size:13px}code{font:12px ui-monospace,monospace}@media(max-width:880px){.demo-controls{grid-template-columns:1fr}.demo-card{min-height:0}.demo-wrap{padding-top:30px}}
+    .demo-links{display:flex;gap:14px;align-items:center;margin-bottom:16px;font-size:12px;font-weight:650}.demo-links a{color:#253544;text-underline-offset:3px}.demo-links span{border:1px solid #bac7cd;border-radius:99px;padding:3px 10px;letter-spacing:.6px}
   </style>
 </head>
 <body>
   <div class="demo-art" aria-hidden="true"></div>
   <main class="demo-wrap">
-    <header><h1>同一组件，三种表面</h1><p>切换材质时保留颜色和透明度。两种玻璃共用一个滑杆；实色隐藏滑杆。彩色背景仅用于这个演示。</p></header>
+    <header><nav class="demo-links" aria-label="演示导航"><span>WEB DEMO</span><a href="https://github.com/YEMIN11238/glass-ui">安装 Skill 与调用示例 ↗</a></nav><h1>同一组件，三种表面</h1><p>切换材质时保留颜色和透明度。两种玻璃共用一个滑杆；实色隐藏滑杆。背景来自这张网页，演示没有读取桌面。</p></header>
     <p id="file-note" class="demo-file-note">此演示使用浏览器 ESM。请在本目录运行 <code>python3 -m http.server 8765 --bind 127.0.0.1</code>，再访问 <code>http://127.0.0.1:8765/demo.html</code>。控制器不需要安装任何依赖。</p>
     <section class="demo-controls" aria-label="演示控制">
       <label>材质 <select id="demo-material"><option value="liquid">液态玻璃</option><option value="frosted">毛玻璃</option><option value="system">实色界面</option></select></label>
@@ -28,7 +29,7 @@
       <div class="glass-surface"><strong>现有内容</strong><span class="glass-muted">继续沿用宿主的布局与操作。</span></div>
       <label>示例输入<input class="glass-field" value="可以直接编辑这个输入框"></label><button id="test-button" class="glass-button" data-primary type="button">测试按钮</button><output id="demo-status" class="demo-status" role="status" aria-live="polite" aria-atomic="true"></output>
     </section>
-    <aside class="demo-note"><p>CSS backdrop-filter 只处理当前网页内的像素。要透出与折射其他窗口或桌面，请使用宿主的原生玻璃层。此演示不读取桌面，不写入浏览器存储，也不改变系统设置。</p></aside>
+    <aside class="demo-note"><p>这里的液态模式是 CSS 低模糊与高光，毛玻璃是更强的背景模糊与细颗粒，实色不透底。本页没有光学折射。macOS 原生桌面透底与 Liquid Glass 请看仓库中独立标注的实际应用画面。</p></aside>
   </main>
   <script>if(location.protocol==='file:')document.getElementById('file-note').style.display='block';</script>
   <script type="module">
@@ -56,7 +57,7 @@
       byId('demo-status').textContent=title+'，'+(state.theme==='system'?'跟随系统，':'手动选择，')+(state.resolvedTheme==='dark'?'深色':'浅色')+(isSolid?'':'，透明度 '+state.transparency+'%')
     }
     const showError=error=>{byId('demo-status').textContent=error.message}
-    const glass=await createGlassController({element:byId('preview'),onChange:render,onError:showError})
+    const glass=await createGlassController({element:byId('preview'),initialState:{mode:'liquid',theme:'light',transparency:85},onChange:render,onError:showError})
     byId('demo-material').onchange=event=>glass.setMode(event.target.value).catch(showError)
     byId('color-options').onclick=event=>{
       const button=event.target.closest('[data-color]')
